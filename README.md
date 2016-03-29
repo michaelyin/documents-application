@@ -63,3 +63,5 @@ Just to say it, Juzu is fun to develop with and eXo Platform is full of features
 ### exoplatform blog :
 <a href="https://www.exoplatform.com/blog/2013/02/06/developing-a-simple-document-management-exo-add-on"> blog </a>
 
+<a href="https://www.exoplatform.com/blog/2013/01/15/exo-add-ons-creating-photo-galleries"> photo galleries blog </a>
+
