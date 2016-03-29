@@ -61,5 +61,5 @@ Just to say it, Juzu is fun to develop with and eXo Platform is full of features
 <p><a href="http://vimeo.com/50831296" target="_vimeo"><img src="https://raw.github.com/benjp/documents/master/screenshots/01-general.png"></img></a></p><p>from <a href="http://vimeo.com/user1241097" target="_vimeo">Benjamin Paillereau</a> on <a href="http://vimeo.com" target="_vimeo">Vimeo</a>.</p>
 
 ### exoplatform blog :
-![alt text](https://www.exoplatform.com/blog/2013/02/06/developing-a-simple-document-management-exo-add-on "blog")
+<a href="https://www.exoplatform.com/blog/2013/02/06/developing-a-simple-document-management-exo-add-on"> blog </a>
 
