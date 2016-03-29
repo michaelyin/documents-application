@@ -2,3 +2,6 @@
 documents.iml
 target/
 listdocuments.iml
+.classpath
+.project
+.settings
