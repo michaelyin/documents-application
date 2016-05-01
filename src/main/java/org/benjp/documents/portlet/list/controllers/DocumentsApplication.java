@@ -3,12 +3,14 @@ package org.benjp.documents.portlet.list.controllers;
 import juzu.*;
 import juzu.bridge.portlet.JuzuPortlet;
 import juzu.plugin.ajax.Ajax;
-import juzu.request.RenderContext;
-import juzu.request.ResourceContext;
+import juzu.request.RequestContext;
 import juzu.template.Template;
+
 import org.apache.commons.fileupload.FileItem;
 import org.benjp.documents.portlet.list.bean.File;
 import org.benjp.documents.portlet.list.bean.Folder;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -16,6 +18,7 @@ import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+
 import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.logging.Logger;
@@ -25,7 +28,8 @@ import java.util.logging.Logger;
 public class DocumentsApplication
 {
 
-  Logger log = Logger.getLogger("DocumentsApplication");
+  //Logger log = Logger.getLogger("DocumentsApplication");
+  private static final Log log = ExoLogger.getLogger(DocumentsApplication.class.getName());
 
   @Inject
   Provider<PortletPreferences> providerPreferences;
@@ -50,13 +54,16 @@ public class DocumentsApplication
 
 
   @View
-  public void index(RenderContext renderContext) throws IOException
+  public Response.Content index(RequestContext renderContext) throws IOException
   {
+	  
+	this.log.info("start the portlet here.");
     PortletPreferences portletPreferences = providerPreferences.get();
     String refresh = portletPreferences.getValue("refresh", "10");
     if ("".equals(refresh)) refresh="10";
 
     PortletMode portletMode = renderContext.getProperty(JuzuPortlet.PORTLET_MODE);
+    log.debug("Portlet mode: {}", portletMode);
     if (portletMode.equals(PortletMode.VIEW))
     {
       String space = documentsData.getSpaceName();
@@ -71,15 +78,15 @@ public class DocumentsApplication
         space = "";
       }
 
-      indexTemplate.with().set("filter", DocumentsData.TYPE_DOCUMENT)
+      return indexTemplate.with().set("filter", DocumentsData.TYPE_DOCUMENT)
               .set("context", context).set("space", space)
               .set("refresh", refresh)
-              .render();
+              .ok();
     }
-    else
-    {
+    else {
+      log.debug("initialize documents Date");
       documentsData.initNodetypes();
-      editTemplate.with().set("refresh", refresh).render();
+      return editTemplate.with().set("refresh", refresh).ok();
 
     }
 
@@ -115,6 +122,7 @@ public class DocumentsApplication
     }
     catch (Exception e)
     {
+      log.error(filter, e);
       return Response.notFound("error");
     }
   }
@@ -150,7 +158,7 @@ public class DocumentsApplication
 
   @Resource
   @Ajax
-  public Response.Content upload(String appContext, String appSpace, String appFilter, String dataUuid, FileItem pic, ResourceContext resourceContext) {
+  public Response.Content upload(String appContext, String appSpace, String appFilter, String dataUuid, FileItem pic, RequestContext resourceContext) {
 
     boolean isPrivateContext = "Personal".equals(appContext);
     String name = (isPrivateContext)?resourceContext.getSecurityContext().getRemoteUser():appSpace;
@@ -184,7 +192,7 @@ public class DocumentsApplication
     else
       file = documentsData.getNode(path);
 
-    propertiesTemplate.with().set("file", file).render();
+    propertiesTemplate.with().set("file", file).ok();
   }
 
   @Resource
@@ -192,7 +200,7 @@ public class DocumentsApplication
   public void restore(String uuid, String name)
   {
     documentsData.restoreVersion(uuid, name);
-    propertiesTemplate.with().set("file", documentsData.getNode(uuid)).render();
+    propertiesTemplate.with().set("file", documentsData.getNode(uuid)).ok();
   }
 
   @Resource
