@@ -11,9 +11,9 @@
   <name>Simple Documents Application</name>
 
   <properties>
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <juzu.version>0.6.0</juzu.version>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <juzu.version>1.1.0</juzu.version>
     <exoplatform.version>4.0.0</exoplatform.version>
   </properties>
 
@@ -42,22 +42,26 @@
     </dependency>
     <dependency>
       <groupId>org.juzu</groupId>
-      <artifactId>juzu-bom-core</artifactId>
-      <version>${juzu.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.juzu</groupId>
       <artifactId>juzu-plugins-portlet</artifactId>
       <version>${juzu.version}</version>
       <scope>provided</scope>
     </dependency>
+    
     <dependency>
-      <groupId>org.juzu</groupId>
-      <artifactId>juzu-plugins-less</artifactId>
-      <version>${juzu.version}</version>
-      <scope>provided</scope>
-    </dependency>
+		<groupId>org.juzu</groupId>
+		<artifactId>juzu-plugins-less4j</artifactId>
+		<version>1.1.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.juzu</groupId>
+		<artifactId>juzu-plugins-webjars</artifactId>
+		<version>1.1.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.webjars</groupId>
+		<artifactId>jquery</artifactId>
+		<version>1.8.3</version>
+	</dependency>
 
 
     <!-- eXo Platform 4.0.3 Dependencies -->
