@@ -2,6 +2,7 @@ package org.benjp.documents.portlet.list.controllers;
 
 
 import juzu.SessionScoped;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FilenameUtils;
 import org.benjp.documents.portlet.list.bean.File;
@@ -20,6 +21,8 @@ import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,6 +32,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.OnParentVersionAction;
 import javax.jcr.version.VersionIterator;
 import javax.servlet.http.HttpServletRequest;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +43,8 @@ import java.util.List;
 @SessionScoped
 public class DocumentsData {
 
+	
+  private static final Log log = ExoLogger.getLogger(DocumentsData.class.getName());
   RepositoryService repositoryService_;
 
   NewFolksonomyService newFolksonomyService_;
@@ -66,6 +72,9 @@ public class DocumentsData {
     newFolksonomyService_ = newFolksonomyService;
     sessionProviderService_ = sessionProviderService;
     linkManager_ = linkManager;
+    
+    log.debug("init DocumentsData");
+	initNodetypes();
   }
 
   public SessionProvider getUserSessionProvider() {
@@ -75,6 +84,7 @@ public class DocumentsData {
 
   protected void initNodetypes()
   {
+	log.info("initNodetypes entry point");
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
     try
     {
@@ -88,15 +98,18 @@ public class DocumentsData {
       }
       catch (NamespaceException ne)
       {
+    	log.info("register adn name space");
         namespaceRegistry.registerNamespace("adn", "http://www.exoplatform.com/jcr/adn/1.0");
       }
 
       ExtendedNodeTypeManager nodeTypeManager = (ExtendedNodeTypeManager) session.getWorkspace().getNodeTypeManager();
       try {
+    	log.info("get META_NODETYPE");
         NodeType ntMeta = nodeTypeManager.getNodeType(META_NODETYPE);
 
       } catch (NoSuchNodeTypeException nsne)
       {
+    	log.info("add node type");
         NodeTypeValue adnMeta = new NodeTypeValue();
         adnMeta.setName(META_NODETYPE);
         adnMeta.setMixin(true);
@@ -133,12 +146,14 @@ public class DocumentsData {
         adnMeta.setDeclaredPropertyDefinitionValues(props);
 
         nodeTypeManager.registerNodeType(adnMeta, ExtendedNodeTypeManager.REPLACE_IF_EXISTS);
+        log.info("add node type: done");
       }
 
     }
     catch (Exception e)
     {
-      e.printStackTrace();
+      log.error("initNodetypes", e);
+      //e.printStackTrace();
     }
     finally
     {
@@ -193,7 +208,7 @@ public class DocumentsData {
     }
     catch (Exception e)
     {
-      System.out.println("JCR::\n" + e.getMessage());
+      log.error("get Node JCR error.", e);
     }
 
 
@@ -317,7 +332,8 @@ public class DocumentsData {
     }
     catch (Exception e)
     {
-      System.out.println("JCR::\n" + e.getMessage());
+        log.error("JCR error", e);
+    	System.out.println("JCR::\n" + e.getMessage());
     }
     return null;
   }
