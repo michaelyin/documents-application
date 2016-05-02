@@ -631,6 +631,7 @@ public class DocumentsData {
 		String filename = FilenameUtils.getName(item.getName());
 		SessionProvider sessionProvider = getUserSessionProvider();
 
+		log.info("name: " + name);
 		try {
 			// get info
 			Session session = sessionProvider.getSession("collaboration",
@@ -744,15 +745,13 @@ public class DocumentsData {
 					DocumentsData.updateTimestamp(homeNode);
 
 					session.save();
-
 				}
 			}
 
 		} catch (Exception e) {
-			// System.out.println("JCR::" + e.getMessage());
+			//it will handled at higher level
 			log.error("", e);
 			throw new RuntimeException("storing file error", e);
-			// e.printStackTrace();
 		}
 	}
 

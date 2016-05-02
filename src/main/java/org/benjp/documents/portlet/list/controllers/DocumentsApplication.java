@@ -165,21 +165,26 @@ public class DocumentsApplication
 
     if (pic != null)
     {
-      if (dataUuid!=null)
-      {
-        documentsData.storeFile(appFilter, pic, name, isPrivateContext, dataUuid);
-        return Response.ok("<div style='background-color:#ffa; padding:20px'>File has been uploaded successfully!</div>")
-                .withMimeType("text/html; charset=UTF-8").withHeader("Cache-Control", "no-cache");
-      }
-      else
-      {
-        documentsData.storeFile(appFilter, pic, name, isPrivateContext);
-        return Response.ok("{\"status\":\"File has been uploaded successfully!\"}")
-                .withMimeType("application/json; charset=UTF-8").withHeader("Cache-Control", "no-cache");
+      try{
+    	  if (dataUuid!=null)
+          {
+            documentsData.storeFile(appFilter, pic, name, isPrivateContext, dataUuid);
+            return Response.ok("<div style='background-color:#ffa; padding:20px'>File has been uploaded successfully!</div>")
+                    .withMimeType("text/html; charset=UTF-8").withHeader("Cache-Control", "no-cache");
+          }
+          else
+          {
+            documentsData.storeFile(appFilter, pic, name, isPrivateContext);
+            return Response.ok("{\"status\":\"File has been uploaded successfully!\"}")
+                    .withMimeType("application/json; charset=UTF-8").withHeader("Cache-Control", "no-cache");
+          }
+      }catch(Exception e){
+    	  String errorMsg = "file uploading error - " + e.getMessage();
+    	  return Response.notFound("{\"error\":\"" + errorMsg + "\"}");
       }
     }
 
-    return Response.notFound("error");
+    return Response.notFound("{\"error\":\"file not found\"}");
   }
 
   @Resource

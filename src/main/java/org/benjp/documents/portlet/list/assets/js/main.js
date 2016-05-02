@@ -29,8 +29,16 @@ $(document).ready(function(){
       url: jzDocumentsUpload,
 
       uploadFinished:function(i,file,response){
-        uploadFiles--;
-        $.data(file).addClass('done');
+    	console.log("file " + i + " is finished!");
+    	console.log("response.error: " + response.error);
+    	uploadFiles--;
+    	
+    	if(response.hasOwnProperty('error')){
+    		alert("uploading file [" + file.name + "] error: " + response.error);
+    	}else{
+    		$.data(file).addClass('done');
+    	}
+        
         //$('#hideDropzone').css("display", "block");
         // response is the JSON object that post_file.php returns
         if (uploadFiles===0) {
@@ -80,7 +88,7 @@ $(document).ready(function(){
 
       uploadStarted:function(i, file, len){
         uploadFiles++;
-        //console.log("uploading : "+uploadFiles);
+        console.log("uploading : "+uploadFiles);
         createImage(file);
       },
 
@@ -101,6 +109,9 @@ $(document).ready(function(){
       '</td>'+
       '<td style="padding: 8px 0;">'+
       '<span class="filename" style="float:left;"></span>'+
+   //   '<div class="alert alert-error" id="" style="display: inline-block;">' + 
+  //    '<i class="uiIconError"></i>upload error' +
+  //    '</div>'
       '<div class="progress" style="float:right;margin:0;">'+
       '<div class="bar"></div>'+
       '<div class="percent percent-bulk" data-percent="0%">0%</div>'+
