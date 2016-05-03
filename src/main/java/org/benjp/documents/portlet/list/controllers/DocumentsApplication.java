@@ -189,7 +189,7 @@ public class DocumentsApplication
 
   @Resource
   @Ajax
-  public void getProperties(String uuid, String path)
+  public Response.Content getProperties(String uuid, String path)
   {
     File file;
     if (uuid!=null && !"".equals(uuid))
@@ -197,7 +197,8 @@ public class DocumentsApplication
     else
       file = documentsData.getNode(path);
 
-    propertiesTemplate.with().set("file", file).ok();
+    Response.Content content = propertiesTemplate.with().set("file", file).ok();
+    return content;
   }
 
   @Resource
