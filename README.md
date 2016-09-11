@@ -1,3 +1,6 @@
+# migrate juzu from 0.6 to 1.1.0 for eXo platform 4.3.0
+https://community.exoplatform.com/portal/g/:spaces:juzu/juzu/wiki/Migration_Guide
+
 # Documents Application
 
 The goal of this app is to provide a simple Document management app inside eXo Platform 3.5.
