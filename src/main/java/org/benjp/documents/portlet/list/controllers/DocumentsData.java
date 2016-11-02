@@ -631,7 +631,7 @@ public class DocumentsData {
 		String filename = FilenameUtils.getName(item.getName());
 		SessionProvider sessionProvider = getUserSessionProvider();
 
-		log.info("name: " + name);
+		log.info("name: " + name); //user name
 		try {
 			// get info
 			Session session = sessionProvider.getSession("collaboration",
@@ -664,40 +664,41 @@ public class DocumentsData {
 				jcrContent.setProperty("jcr:lastModified",
 						Calendar.getInstance());
 				jcrContent.setProperty("jcr:encoding", "UTF-8");
-				if (filename.endsWith(".jpg"))
+				String tmp = filename.toLowerCase();
+				if (tmp.endsWith(".jpg") || tmp.endsWith(".jpeg"))
 					jcrContent.setProperty("jcr:mimeType", "image/jpeg");
-				else if (filename.endsWith(".png"))
+				else if (tmp.endsWith(".png"))
 					jcrContent.setProperty("jcr:mimeType", "image/png");
-				else if (filename.endsWith(".pdf"))
+				else if (tmp.endsWith(".pdf"))
 					jcrContent.setProperty("jcr:mimeType", "application/pdf");
-				else if (filename.endsWith(".doc"))
+				else if (tmp.endsWith(".doc"))
 					jcrContent.setProperty("jcr:mimeType",
 							"application/vnd.ms-word");
-				else if (filename.endsWith(".xls"))
+				else if (tmp.endsWith(".xls"))
 					jcrContent.setProperty("jcr:mimeType",
 							"application/vnd.ms-excel");
-				else if (filename.endsWith(".ppt"))
+				else if (tmp.endsWith(".ppt"))
 					jcrContent.setProperty("jcr:mimeType",
 							"application/vnd.ms-powerpoint");
-				else if (filename.endsWith(".docx"))
+				else if (tmp.endsWith(".docx"))
 					jcrContent
 							.setProperty("jcr:mimeType",
 									"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-				else if (filename.endsWith(".xlsx"))
+				else if (tmp.endsWith(".xlsx"))
 					jcrContent
 							.setProperty("jcr:mimeType",
 									"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-				else if (filename.endsWith(".pptx"))
+				else if (tmp.endsWith(".pptx"))
 					jcrContent
 							.setProperty("jcr:mimeType",
 									"application/vnd.openxmlformats-officedocument.presentationml.presentation");
-				else if (filename.endsWith(".odp"))
+				else if (tmp.endsWith(".odp"))
 					jcrContent.setProperty("jcr:mimeType",
 							"application/vnd.oasis.opendocument.presentation");
-				else if (filename.endsWith(".odt"))
+				else if (tmp.endsWith(".odt"))
 					jcrContent.setProperty("jcr:mimeType",
 							"application/vnd.oasis.opendocument.text");
-				else if (filename.endsWith(".ods"))
+				else if (tmp.endsWith(".ods"))
 					jcrContent.setProperty("jcr:mimeType",
 							"application/vnd.oasis.opendocument.spreadsheet");
 				DocumentsData.updateTimestamp(docNode);
